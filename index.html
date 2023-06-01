@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Indian to international number system converter</title>
+</head>
+
+<style>
+    #inputFields {
+		width: 75%;
+	}
+
+	h3, label, input, button, p {
+		font-size: 1.2em;
+	}
+
+	.result {
+		font-size: 1.3em;
+
+	}
+
+	button {
+		margin: 10px;
+
+	}
+
+</style>
+
+<body>
+    <h1>Indian to international numbering converter</h1>
+
+    <section id="inputFields">
+        <h3>Indian numbering system</h3>
+        <p><i>Enter value in crores or lakhs field, then click on button.</i></p>
+        <p><i>Values of crores and lakhs will be formatted into Indian number system.</i></p>
+        <label>Crore: <input type="text" id="crore" placeholder="numbers, no commas"></label><button onclick="convertCrore()">Convert crore</button>
+        <br>
+        <label>Lakhs: <input type="text" id="lakhs" placeholder="numbers, no commas"></label><button onclick="convertLakhs()">Convert lakhs</button>
+
+        <h3>International numbering system</h3>
+        <p><i>Converted values displayed below, in international format.</i></p>
+        <p>Thousands: <span class="result" id="thousands"></span></p>
+        <p>Millions: <span class="result" id="millions"></span></p>
+        <p>Billions: <span class="result" id="billions"></span></p>
+        <p>Tillions: <span class="result" id="trillions"></span></p>
+    </section>
+
+</body>
+
+<script>
+var croreAmount;
+var lakhsAmount;
+var thousandsAmount;
+var millionsAmount;
+var billionsAmount;
+var trillionsAmount;
+
+
+function getValues() {
+    // set variables to input values
+    croreAmount = document.getElementById('crore').value;
+    lakhsAmount = document.getElementById('lakhs').value;
+    // thousandsAmount = document.getElementById('thousands').value;
+    // millionsAmount = document.getElementById('millions').value;
+    // billionsAmount = document.getElementById('billions').value;
+    // trillionsAmount = document.getElementById('trillions').value;
+}
+
+function displayResults() {
+    // format numbers into Indian number format
+    croreAmount = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(croreAmount);
+    lakhsAmount = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(lakhsAmount);
+
+    // format numbers into UK number format
+    thousandsAmount = new Intl.NumberFormat('en-UK', { maximumSignificantDigits: 3 }).format(thousandsAmount);
+    millionsAmount = new Intl.NumberFormat('en-UK', { maximumSignificantDigits: 3 }).format(millionsAmount);
+    billionsAmount = new Intl.NumberFormat('en-UK', { maximumSignificantDigits: 3 }).format(billionsAmount);
+    trillionsAmount = new Intl.NumberFormat('en-UK', { maximumSignificantDigits: 3 }).format(trillionsAmount);
+
+    // convert number strings into intergars
+    Number(croreAmount);
+    Number(lakhsAmount);
+    Number(thousandsAmount);
+    Number(millionsAmount);
+    Number(billionsAmount);
+    Number(trillionsAmount);
+}
+
+function writeResults() {
+    // write results to input and span fields
+    document.getElementById("crore").value = croreAmount;
+    document.getElementById("lakhs").value = lakhsAmount;
+    document.getElementById("thousands").innerHTML = thousandsAmount;
+    document.getElementById("millions").innerHTML = millionsAmount;
+    document.getElementById("billions").innerHTML = billionsAmount;
+    document.getElementById("trillions").innerHTML = trillionsAmount;
+
+}
+
+function convertCrore() {
+    getValues();
+
+    // convert numbers to crore
+    croreAmount = croreAmount * 1;
+    lakhsAmount = croreAmount * 100;
+    thousandsAmount = croreAmount * 100000;
+    millionsAmount = croreAmount * 10;
+    billionsAmount = croreAmount * 0.01;
+    trillionsAmount = croreAmount * 0.00001;
+
+    displayResults();
+    writeResults();
+
+}
+
+function convertLakhs() {
+    getValues();
+
+    // convert numbers to lakhs
+    croreAmount = lakhsAmount * 0.01;
+    lakhsAmount = lakhsAmount * 1;
+    thousandsAmount = lakhsAmount * 100;
+    millionsAmount = lakhsAmount * 0.1;
+    billionsAmount = lakhsAmount * 0.0001;
+    trillionsAmount = lakhsAmount * 1.0E-7;
+
+    displayResults();
+    writeResults();
+
+}
+
+</script>
+
+</html>
