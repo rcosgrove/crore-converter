@@ -9,22 +9,22 @@
 
 <style>
     #inputFields {
-		width: 75%;
-	}
+        width: 75%;
+    }
 
-	h3, label, input, button, p {
-		font-size: 1.2em;
-	}
+    h3, label, input, button, p {
+        font-size: 1.2em;
+    }
 
-	.result {
-		font-size: 1.3em;
+    .result {
+        font-size: 1.3em;
 
-	}
+    }
 
-	button {
-		margin: 10px;
+    button {
+        margin: 10px;
 
-	}
+    }
 
 </style>
 
@@ -33,14 +33,15 @@
 
     <section id="inputFields">
         <h3>Indian numbering system</h3>
-        <p><i>Enter value in crores or lakhs field, then click on button.</i></p>
+        <p><i>Enter value to be converted (with or without commas) in crores or lakhs field, then click on button to convert.</i></p>
         <p><i>Values of crores and lakhs will be formatted into Indian number system.</i></p>
-        <label>Crore: <input type="text" id="crore" placeholder="numbers, no commas"></label><button onclick="convertCrore()">Convert crore</button>
+        <label>Crore: <input type="text" id="crore" placeholder="number to convert"></label><button onclick="convertCrore()">Convert crore</button>
         <br>
-        <label>Lakhs: <input type="text" id="lakhs" placeholder="numbers, no commas"></label><button onclick="convertLakhs()">Convert lakhs</button>
+        <label>Lakhs: <input type="text" id="lakhs" placeholder="number to convert"></label><button onclick="convertLakhs()">Convert lakhs</button>
 
         <h3>International numbering system</h3>
         <p><i>Converted values displayed below, in international format.</i></p>
+        <p>Converted from: <span class="result" id="originalNumber"></span></p>
         <p>Thousands: <span class="result" id="thousands"></span></p>
         <p>Millions: <span class="result" id="millions"></span></p>
         <p>Billions: <span class="result" id="billions"></span></p>
@@ -57,7 +58,6 @@ var millionsAmount;
 var billionsAmount;
 var trillionsAmount;
 
-
 function getValues() {
     // set variables to input values
     croreAmount = document.getElementById('crore').value;
@@ -68,7 +68,7 @@ function getValues() {
     // trillionsAmount = document.getElementById('trillions').value;
 }
 
-function displayResults() {
+function formatResults() {
     // format numbers into Indian number format
     croreAmount = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(croreAmount);
     lakhsAmount = new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(lakhsAmount);
@@ -79,13 +79,6 @@ function displayResults() {
     billionsAmount = new Intl.NumberFormat('en-UK', { maximumSignificantDigits: 3 }).format(billionsAmount);
     trillionsAmount = new Intl.NumberFormat('en-UK', { maximumSignificantDigits: 3 }).format(trillionsAmount);
 
-    // convert number strings into intergars
-    Number(croreAmount);
-    Number(lakhsAmount);
-    Number(thousandsAmount);
-    Number(millionsAmount);
-    Number(billionsAmount);
-    Number(trillionsAmount);
 }
 
 function writeResults() {
@@ -99,8 +92,17 @@ function writeResults() {
 
 }
 
+function removeCommas() {
+    // remove commas from inputted number
+    
+    croreAmount = croreAmount.split(',').join('');
+    lakhsAmount = lakhsAmount.split(',').join('');
+}
+
+
 function convertCrore() {
     getValues();
+    removeCommas();
 
     // convert numbers to crore
     croreAmount = croreAmount * 1;
@@ -110,13 +112,21 @@ function convertCrore() {
     billionsAmount = croreAmount * 0.01;
     trillionsAmount = croreAmount * 0.00001;
 
-    displayResults();
+    formatResults();
     writeResults();
+
+    document.getElementById("originalNumber").innerHTML = "crore";
 
 }
 
 function convertLakhs() {
     getValues();
+    removeCommas();
+
+    // remove commas from input field
+
+    croreAmount = croreAmount.split(',').join('');
+    lakhsAmount = lakhsAmount.split(',').join('');
 
     // convert numbers to lakhs
     croreAmount = lakhsAmount * 0.01;
@@ -126,11 +136,12 @@ function convertLakhs() {
     billionsAmount = lakhsAmount * 0.0001;
     trillionsAmount = lakhsAmount * 1.0E-7;
 
-    displayResults();
+    formatResults();
     writeResults();
 
-}
+    document.getElementById("originalNumber").innerHTML = "lakhs";
 
+}
 </script>
 
 </html>
